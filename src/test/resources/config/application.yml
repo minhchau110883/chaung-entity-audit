@@ -88,7 +88,7 @@ jhipster:
     security:
         authentication:
             jwt:
-                secret: eac7f3abf558b28ff0b6b3d1921bd35f3d2c1df2
+                secret: 162ea66827b55fff92afb3115d16d6b74538a2bb
                 # Token is valid 24 hours
                 token-validity-in-seconds: 86400
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
