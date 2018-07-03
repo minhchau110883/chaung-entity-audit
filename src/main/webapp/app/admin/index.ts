@@ -27,3 +27,8 @@ export * from './user-management/user-management.component';
 export * from './user-management/user-management.route';
 export * from './user-management/user-modal.service';
 export * from './admin.route';
+export * from './entity-audit/entity-audit.route';
+export * from './entity-audit/entity-audit.component';
+export * from './entity-audit/entity-audit.service';
+export * from './entity-audit/entity-audit-event.model';
+export * from './entity-audit/entity-audit-modal.component';

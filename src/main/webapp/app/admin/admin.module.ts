@@ -1,7 +1,10 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { DiffMatchPatchModule } from 'ng-diff-match-patch';
+
 
 import { EntityAuditSharedModule } from '../shared';
+// import { EntityAuditModule } from './entity-audit/entity-audit.module.ts.txt';
 /* jhipster-needle-add-admin-module-import - JHipster will add admin modules imports here */
 
 import {
@@ -27,13 +30,18 @@ import {
     LogsService,
     UserResolvePagingParams,
     UserResolve,
-    UserModalService
+    UserModalService,
+    EntityAuditComponent,
+    EntityAuditModalComponent,
+    EntityAuditService
 } from './';
 
 @NgModule({
     imports: [
         EntityAuditSharedModule,
         RouterModule.forChild(adminState),
+        DiffMatchPatchModule
+        // EntityAuditModule,
         /* jhipster-needle-add-admin-module - JHipster will add admin modules here */
     ],
     declarations: [
@@ -50,13 +58,16 @@ import {
         JhiHealthModalComponent,
         JhiDocsComponent,
         JhiMetricsMonitoringComponent,
-        JhiMetricsMonitoringModalComponent
+        JhiMetricsMonitoringModalComponent,
+        EntityAuditComponent,
+        EntityAuditModalComponent
     ],
     entryComponents: [
         UserMgmtDialogComponent,
         UserMgmtDeleteDialogComponent,
         JhiHealthModalComponent,
         JhiMetricsMonitoringModalComponent,
+        EntityAuditModalComponent
     ],
     providers: [
         AuditsService,
@@ -66,7 +77,8 @@ import {
         LogsService,
         UserResolvePagingParams,
         UserResolve,
-        UserModalService
+        UserModalService,
+        EntityAuditService
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
