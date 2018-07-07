@@ -83,4 +83,13 @@ public class PersonServiceImpl implements PersonService {
         log.debug("Request to delete Person : {}", id);
         personRepository.delete(id);
     }
+
+    @Override
+    public PersonDTO update(PersonDTO personDTO) {
+        Person person = personRepository.findOne(personDTO.getId());
+        person.setLastName(personDTO.getLastName());
+        person.setFirstName(personDTO.getFirstName());
+        person.setMiddleName(personDTO.getMiddleName());
+        return personMapper.toDto(person);
+    }
 }

@@ -17,6 +17,8 @@ public interface PersonService {
      */
     PersonDTO save(PersonDTO personDTO);
 
+    PersonDTO update(PersonDTO personDTO);
+
     /**
      * Get all the people.
      *
