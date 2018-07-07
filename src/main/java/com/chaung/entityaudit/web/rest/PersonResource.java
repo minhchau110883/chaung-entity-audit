@@ -80,7 +80,7 @@ public class PersonResource {
         if (personDTO.getId() == null) {
             return createPerson(personDTO);
         }
-        PersonDTO result = personService.save(personDTO);
+        PersonDTO result = personService.updatePerson(personDTO);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, personDTO.getId().toString()))
             .body(result);

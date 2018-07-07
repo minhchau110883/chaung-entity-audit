@@ -2,6 +2,7 @@ package com.chaung.entityaudit.domain;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.javers.spring.annotation.JaversAuditable;
 
 import javax.persistence.*;
 

@@ -2,6 +2,7 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { EntityAuditSharedModule } from '../shared';
+import { EntityAuditModule } from './entity-audit/entity-audit.module';
 /* jhipster-needle-add-admin-module-import - JHipster will add admin modules imports here */
 
 import {
@@ -34,6 +35,7 @@ import {
     imports: [
         EntityAuditSharedModule,
         RouterModule.forChild(adminState),
+        EntityAuditModule,
         /* jhipster-needle-add-admin-module - JHipster will add admin modules here */
     ],
     declarations: [

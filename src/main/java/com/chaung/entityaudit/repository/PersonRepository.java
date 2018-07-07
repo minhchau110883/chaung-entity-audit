@@ -1,6 +1,7 @@
 package com.chaung.entityaudit.repository;
 
 import com.chaung.entityaudit.domain.Person;
+import org.javers.spring.annotation.JaversSpringDataAuditable;
 import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
@@ -11,6 +12,7 @@ import org.springframework.data.jpa.repository.*;
  */
 @SuppressWarnings("unused")
 @Repository
+@JaversSpringDataAuditable
 public interface PersonRepository extends JpaRepository<Person, Long>, JpaSpecificationExecutor<Person> {
 
 }

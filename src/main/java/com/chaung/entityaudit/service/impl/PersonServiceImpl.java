@@ -5,6 +5,8 @@ import com.chaung.entityaudit.domain.Person;
 import com.chaung.entityaudit.repository.PersonRepository;
 import com.chaung.entityaudit.service.dto.PersonDTO;
 import com.chaung.entityaudit.service.mapper.PersonMapper;
+import org.javers.spring.annotation.JaversAuditable;
+import org.javers.spring.annotation.JaversSpringDataAuditable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -42,6 +44,19 @@ public class PersonServiceImpl implements PersonService {
         log.debug("Request to save Person : {}", personDTO);
         Person person = personMapper.toEntity(personDTO);
         person = personRepository.save(person);
+        return personMapper.toDto(person);
+    }
+
+    @Override
+    @Transactional
+    @JaversAuditable
+    public PersonDTO updatePerson(PersonDTO personDTO) {
+
+        Person person = personRepository.findOne(personDTO.getId());
+        person.setFirstName(personDTO.getFirstName());
+        person.setLastName(personDTO.getLastName());
+        //personRepository.save(person);
+        System.out.println(person);
         return personMapper.toDto(person);
     }
 
