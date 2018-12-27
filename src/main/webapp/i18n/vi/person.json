@@ -1,0 +1,26 @@
+
+{
+    "entityAuditApp": {
+        "person" : {
+            "home": {
+                "title": "People",
+                "createLabel": "Thêm mới một Person",
+                "createOrEditLabel": "Thêm mới hoặc cập nhật Person"
+            },
+            "created": "Một Person mới được tạo với định danh {{ param }}",
+            "updated": "Một Person cập nhật với định danh {{ param }}",
+            "deleted": "Một Person đã xóa với định danh {{ param }}",
+            "delete": {
+                "question": "Bạn có chắc là muốn xóa Person {{ id }}?"
+            },
+            "detail": {
+                "title": "Person"
+            },
+            "firstName": "First Name",
+            "lastName": "Last Name",
+            "middleName": "Middle Name",
+            "dateOfBirth": "Date Of Birth",
+            "gender": "Gender"
+        }
+    }
+}
