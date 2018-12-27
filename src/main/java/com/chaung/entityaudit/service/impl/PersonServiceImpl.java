@@ -49,13 +49,13 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     @Transactional
-    @JaversAuditable
+    //@JaversAuditable
     public PersonDTO updatePerson(PersonDTO personDTO) {
 
         Person person = personRepository.findOne(personDTO.getId());
         person.setFirstName(personDTO.getFirstName());
         person.setLastName(personDTO.getLastName());
-        //personRepository.save(person);
+        personRepository.save(person);
         System.out.println(person);
         return personMapper.toDto(person);
     }
