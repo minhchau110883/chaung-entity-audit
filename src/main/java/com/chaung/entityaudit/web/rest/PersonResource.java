@@ -78,7 +78,7 @@ public class PersonResource {
     public ResponseEntity<PersonDTO> updatePerson(@RequestBody PersonDTO personDTO) throws URISyntaxException {
         log.debug("REST request to update Person : {}", personDTO);
         if (personDTO.getId() == null) {
-            return createPerson(personDTO);
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         PersonDTO result = personService.save(personDTO);
         return ResponseEntity.ok()
@@ -99,7 +99,20 @@ public class PersonResource {
         log.debug("REST request to get People by criteria: {}", criteria);
         Page<PersonDTO> page = personQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/people");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+    * GET  /people/count : count all the people.
+    *
+    * @param criteria the criterias which the requested entities should match
+    * @return the ResponseEntity with status 200 (OK) and the count in body
+    */
+    @GetMapping("/people/count")
+    @Timed
+    public ResponseEntity<Long> countPeople(PersonCriteria criteria) {
+        log.debug("REST request to count People by criteria: {}", criteria);
+        return ResponseEntity.ok().body(personQueryService.countByCriteria(criteria));
     }
 
     /**
@@ -112,8 +125,8 @@ public class PersonResource {
     @Timed
     public ResponseEntity<PersonDTO> getPerson(@PathVariable Long id) {
         log.debug("REST request to get Person : {}", id);
-        PersonDTO personDTO = personService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(personDTO));
+        Optional<PersonDTO> personDTO = personService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(personDTO);
     }
 
     /**

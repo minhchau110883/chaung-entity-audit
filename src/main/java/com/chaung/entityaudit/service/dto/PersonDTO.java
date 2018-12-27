@@ -1,6 +1,5 @@
 package com.chaung.entityaudit.service.dto;
 
-
 import java.time.ZonedDateTime;
 import java.io.Serializable;
 import java.util.Objects;
@@ -80,7 +79,7 @@ public class PersonDTO implements Serializable {
         }
 
         PersonDTO personDTO = (PersonDTO) o;
-        if(personDTO.getId() == null || getId() == null) {
+        if (personDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), personDTO.getId());

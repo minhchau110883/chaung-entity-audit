@@ -8,6 +8,7 @@ if (module['hot']) {
     module['hot'].accept();
 }
 
-platformBrowserDynamic().bootstrapModule(EntityAuditAppModule)
-.then((success) => console.log(`Application started`))
-.catch((err) => console.error(err));
+platformBrowserDynamic()
+    .bootstrapModule(EntityAuditAppModule, { preserveWhitespaces: true })
+    .then(success => console.log(`Application started`))
+    .catch(err => console.error(err));

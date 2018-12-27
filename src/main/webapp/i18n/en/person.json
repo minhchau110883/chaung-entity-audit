@@ -1,7 +1,6 @@
-
 {
     "entityAuditApp": {
-        "person" : {
+        "person": {
             "home": {
                 "title": "People",
                 "createLabel": "Create a new Person",

@@ -1,49 +1,23 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { EntityAuditSharedModule } from '../../shared';
+import { EntityAuditSharedModule } from 'app/shared';
 import {
-    PersonService,
-    PersonPopupService,
     PersonComponent,
     PersonDetailComponent,
-    PersonDialogComponent,
-    PersonPopupComponent,
+    PersonUpdateComponent,
     PersonDeletePopupComponent,
     PersonDeleteDialogComponent,
     personRoute,
-    personPopupRoute,
+    personPopupRoute
 } from './';
 
-const ENTITY_STATES = [
-    ...personRoute,
-    ...personPopupRoute,
-];
+const ENTITY_STATES = [...personRoute, ...personPopupRoute];
 
 @NgModule({
-    imports: [
-        EntityAuditSharedModule,
-        RouterModule.forChild(ENTITY_STATES)
-    ],
-    declarations: [
-        PersonComponent,
-        PersonDetailComponent,
-        PersonDialogComponent,
-        PersonDeleteDialogComponent,
-        PersonPopupComponent,
-        PersonDeletePopupComponent,
-    ],
-    entryComponents: [
-        PersonComponent,
-        PersonDialogComponent,
-        PersonPopupComponent,
-        PersonDeleteDialogComponent,
-        PersonDeletePopupComponent,
-    ],
-    providers: [
-        PersonService,
-        PersonPopupService,
-    ],
+    imports: [EntityAuditSharedModule, RouterModule.forChild(ENTITY_STATES)],
+    declarations: [PersonComponent, PersonDetailComponent, PersonUpdateComponent, PersonDeleteDialogComponent, PersonDeletePopupComponent],
+    entryComponents: [PersonComponent, PersonUpdateComponent, PersonDeleteDialogComponent, PersonDeletePopupComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class EntityAuditPersonModule {}

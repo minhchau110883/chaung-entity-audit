@@ -1,14 +1,14 @@
 package com.chaung.entityaudit.service;
 
-
-import java.time.ZonedDateTime;
 import java.util.List;
+
+import javax.persistence.criteria.JoinType;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specifications;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,13 +18,12 @@ import com.chaung.entityaudit.domain.Person;
 import com.chaung.entityaudit.domain.*; // for static metamodels
 import com.chaung.entityaudit.repository.PersonRepository;
 import com.chaung.entityaudit.service.dto.PersonCriteria;
-
 import com.chaung.entityaudit.service.dto.PersonDTO;
 import com.chaung.entityaudit.service.mapper.PersonMapper;
 
 /**
  * Service for executing complex queries for Person entities in the database.
- * The main input is a {@link PersonCriteria} which get's converted to {@link Specifications},
+ * The main input is a {@link PersonCriteria} which gets converted to {@link Specification},
  * in a way that all the filters must apply.
  * It returns a {@link List} of {@link PersonDTO} or a {@link Page} of {@link PersonDTO} which fulfills the criteria.
  */
@@ -33,7 +32,6 @@ import com.chaung.entityaudit.service.mapper.PersonMapper;
 public class PersonQueryService extends QueryService<Person> {
 
     private final Logger log = LoggerFactory.getLogger(PersonQueryService.class);
-
 
     private final PersonRepository personRepository;
 
@@ -52,7 +50,7 @@ public class PersonQueryService extends QueryService<Person> {
     @Transactional(readOnly = true)
     public List<PersonDTO> findByCriteria(PersonCriteria criteria) {
         log.debug("find by criteria : {}", criteria);
-        final Specifications<Person> specification = createSpecification(criteria);
+        final Specification<Person> specification = createSpecification(criteria);
         return personMapper.toDto(personRepository.findAll(specification));
     }
 
@@ -65,16 +63,28 @@ public class PersonQueryService extends QueryService<Person> {
     @Transactional(readOnly = true)
     public Page<PersonDTO> findByCriteria(PersonCriteria criteria, Pageable page) {
         log.debug("find by criteria : {}, page: {}", criteria, page);
-        final Specifications<Person> specification = createSpecification(criteria);
-        final Page<Person> result = personRepository.findAll(specification, page);
-        return result.map(personMapper::toDto);
+        final Specification<Person> specification = createSpecification(criteria);
+        return personRepository.findAll(specification, page)
+            .map(personMapper::toDto);
     }
 
     /**
-     * Function to convert PersonCriteria to a {@link Specifications}
+     * Return the number of matching entities in the database
+     * @param criteria The object which holds all the filters, which the entities should match.
+     * @return the number of matching entities.
      */
-    private Specifications<Person> createSpecification(PersonCriteria criteria) {
-        Specifications<Person> specification = Specifications.where(null);
+    @Transactional(readOnly = true)
+    public long countByCriteria(PersonCriteria criteria) {
+        log.debug("count by criteria : {}", criteria);
+        final Specification<Person> specification = createSpecification(criteria);
+        return personRepository.count(specification);
+    }
+
+    /**
+     * Function to convert PersonCriteria to a {@link Specification}
+     */
+    private Specification<Person> createSpecification(PersonCriteria criteria) {
+        Specification<Person> specification = Specification.where(null);
         if (criteria != null) {
             if (criteria.getId() != null) {
                 specification = specification.and(buildSpecification(criteria.getId(), Person_.id));
@@ -97,5 +107,4 @@ public class PersonQueryService extends QueryService<Person> {
         }
         return specification;
     }
-
 }

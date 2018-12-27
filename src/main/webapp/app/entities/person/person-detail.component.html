@@ -1,42 +1,43 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="person">
+            <h2><span jhiTranslate="entityAuditApp.person.detail.title">Person</span> {{person.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="entityAuditApp.person.firstName">First Name</span></dt>
+                <dd>
+                    <span>{{person.firstName}}</span>
+                </dd>
+                <dt><span jhiTranslate="entityAuditApp.person.lastName">Last Name</span></dt>
+                <dd>
+                    <span>{{person.lastName}}</span>
+                </dd>
+                <dt><span jhiTranslate="entityAuditApp.person.middleName">Middle Name</span></dt>
+                <dd>
+                    <span>{{person.middleName}}</span>
+                </dd>
+                <dt><span jhiTranslate="entityAuditApp.person.dateOfBirth">Date Of Birth</span></dt>
+                <dd>
+                    <span>{{person.dateOfBirth}}</span>
+                </dd>
+                <dt><span jhiTranslate="entityAuditApp.person.gender">Gender</span></dt>
+                <dd>
+                    <span>{{person.gender}}</span>
+                </dd>
+            </dl>
 
-<div *ngIf="person">
-    <h2><span jhiTranslate="entityAuditApp.person.detail.title">Person</span> {{person.id}}</h2>
-    <hr>
-    <jhi-alert-error></jhi-alert-error>
-    <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="entityAuditApp.person.firstName">First Name</span></dt>
-        <dd>
-            <span>{{person.firstName}}</span>
-        </dd>
-        <dt><span jhiTranslate="entityAuditApp.person.lastName">Last Name</span></dt>
-        <dd>
-            <span>{{person.lastName}}</span>
-        </dd>
-        <dt><span jhiTranslate="entityAuditApp.person.middleName">Middle Name</span></dt>
-        <dd>
-            <span>{{person.middleName}}</span>
-        </dd>
-        <dt><span jhiTranslate="entityAuditApp.person.dateOfBirth">Date Of Birth</span></dt>
-        <dd>
-            <span>{{person.dateOfBirth | date:'medium'}}</span>
-        </dd>
-        <dt><span jhiTranslate="entityAuditApp.person.gender">Gender</span></dt>
-        <dd>
-            <span>{{person.gender}}</span>
-        </dd>
-    </dl>
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
 
-    <button type="submit"
-            (click)="previousState()"
-            class="btn btn-info">
-        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
-    </button>
-
-    <button type="button"
-            [routerLink]="['/', { outlets: { popup: 'person/'+ person.id + '/edit'} }]"
-            replaceUrl="true"
-            queryParamsHandling="merge"
-            class="btn btn-primary">
-        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
-    </button>
+            <button type="button"
+                    [routerLink]="['/person', person.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
 </div>

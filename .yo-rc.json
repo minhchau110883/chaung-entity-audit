@@ -4,7 +4,7 @@
       "packageName": "com.chaung.entityaudit",
       "nativeLanguage": "en"
     },
-    "jhipsterVersion": "4.14.5",
+    "jhipsterVersion": "5.7.2",
     "baseName": "EntityAudit",
     "packageName": "com.chaung.entityaudit",
     "packageFolder": "com/chaung/entityaudit",
@@ -34,6 +34,7 @@
     "languages": [
       "en",
       "vi"
-    ]
+    ],
+    "otherModules": []
   }
 }

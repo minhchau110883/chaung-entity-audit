@@ -1,7 +1,8 @@
 {
     "global": {
         "title": "EntityAudit",
-        "browsehappy": "Bạn đang sử dụng một trình duyệt <strong>quá cũ</strong>. Vui lòng <a href=\"http://browsehappy.com/?locale=en\">nâng cấp trình duyệt</a> của bạn để có trải nghiệm tốt nhất.",
+        "browsehappy":
+            "Bạn đang sử dụng một trình duyệt <strong>quá cũ</strong>. Vui lòng <a href=\"http://browsehappy.com/?locale=en\">nâng cấp trình duyệt</a> của bạn để có trải nghiệm tốt nhất.",
         "menu": {
             "home": "Trang chủ",
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
@@ -49,7 +50,8 @@
                 "authenticated": {
                     "prefix": "Nếu bạn muốn ",
                     "link": "đăng nhập",
-                    "suffix": ", bạn có thể thử với tài khoản mặc định:<br/>- Quản trị viên (tài khoản=\"admin\" và mật khẩu=\"admin\") <br/>- Người dùng (tài khoản=\"user\" và mật khẩu=\"user\")."
+                    "suffix":
+                        ", bạn có thể thử với tài khoản mặc định:<br/>- Quản trị viên (tài khoản=\"admin\" và mật khẩu=\"admin\") <br/>- Người dùng (tài khoản=\"user\" và mật khẩu=\"user\")."
                 },
                 "register": {
                     "noaccount": "Bạn vẫn chưa có tài khoản?",
@@ -83,7 +85,7 @@
             "id": "ID"
         },
         "ribbon": {
-            "dev":"Phát triển"
+            "dev": "Phát triển"
         },
         "item-count": "Showing {{first}} - {{second}} of {{total}} items."
     },
@@ -127,7 +129,8 @@
         "Size": "Trường {{ fieldName }} không nằm trong giới hạn tối thiểu/tối đa!",
         "userexists": "Tên đăng nhập đã được sử dụng!",
         "emailexists": "Email đã được sử dụng!",
-        "idexists": "Thêm mới {{ entityName }} không được trùng với định danh đã tồn tại"
+        "idexists": "Thêm mới {{ entityName }} không được trùng với định danh đã tồn tại",
+        "idnull": "Invalid ID"
     },
     "footer": "Đây là chân trang của bạn"
 }

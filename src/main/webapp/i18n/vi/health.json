@@ -20,6 +20,7 @@
             "status": "Trạng thái"
         },
         "status": {
+            "UNKNOWN": "UNKNOWN",
             "UP": "Đang hoạt động",
             "DOWN": "Đã tắt"
         }

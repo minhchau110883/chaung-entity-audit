@@ -4,6 +4,7 @@ import { EntityAuditPersonModule } from './person/person.module';
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule({
+    // prettier-ignore
     imports: [
         EntityAuditPersonModule,
         /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
