@@ -1,8 +1,11 @@
 package com.chaung.entityaudit.service;
 
 import com.chaung.entityaudit.service.dto.PersonDTO;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.Optional;
 
 /**
  * Service Interface for managing Person.
@@ -25,13 +28,14 @@ public interface PersonService {
      */
     Page<PersonDTO> findAll(Pageable pageable);
 
+
     /**
      * Get the "id" person.
      *
      * @param id the id of the entity
      * @return the entity
      */
-    PersonDTO findOne(Long id);
+    Optional<PersonDTO> findOne(Long id);
 
     /**
      * Delete the "id" person.

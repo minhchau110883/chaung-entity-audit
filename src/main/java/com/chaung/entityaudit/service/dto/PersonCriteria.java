@@ -1,6 +1,7 @@
 package com.chaung.entityaudit.service.dto;
 
 import java.io.Serializable;
+import java.util.Objects;
 import io.github.jhipster.service.filter.BooleanFilter;
 import io.github.jhipster.service.filter.DoubleFilter;
 import io.github.jhipster.service.filter.Filter;
@@ -8,11 +9,7 @@ import io.github.jhipster.service.filter.FloatFilter;
 import io.github.jhipster.service.filter.IntegerFilter;
 import io.github.jhipster.service.filter.LongFilter;
 import io.github.jhipster.service.filter.StringFilter;
-
-
-
 import io.github.jhipster.service.filter.ZonedDateTimeFilter;
-
 
 /**
  * Criteria class for the Person entity. This class is used in PersonResource to
@@ -23,8 +20,8 @@ import io.github.jhipster.service.filter.ZonedDateTimeFilter;
  * fix type specific filters.
  */
 public class PersonCriteria implements Serializable {
-    private static final long serialVersionUID = 1L;
 
+    private static final long serialVersionUID = 1L;
 
     private LongFilter id;
 
@@ -37,9 +34,6 @@ public class PersonCriteria implements Serializable {
     private ZonedDateTimeFilter dateOfBirth;
 
     private BooleanFilter gender;
-
-    public PersonCriteria() {
-    }
 
     public LongFilter getId() {
         return id;
@@ -87,6 +81,37 @@ public class PersonCriteria implements Serializable {
 
     public void setGender(BooleanFilter gender) {
         this.gender = gender;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        final PersonCriteria that = (PersonCriteria) o;
+        return
+            Objects.equals(id, that.id) &&
+            Objects.equals(firstName, that.firstName) &&
+            Objects.equals(lastName, that.lastName) &&
+            Objects.equals(middleName, that.middleName) &&
+            Objects.equals(dateOfBirth, that.dateOfBirth) &&
+            Objects.equals(gender, that.gender);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+        id,
+        firstName,
+        lastName,
+        middleName,
+        dateOfBirth,
+        gender
+        );
     }
 
     @Override

@@ -1,7 +1,6 @@
-
 {
     "entityAuditApp": {
-        "person" : {
+        "person": {
             "home": {
                 "title": "People",
                 "createLabel": "Thêm mới một Person",

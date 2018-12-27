@@ -24,6 +24,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.Validator;
 
 import javax.persistence.EntityManager;
 import java.time.Instant;
@@ -31,6 +32,7 @@ import java.time.ZonedDateTime;
 import java.time.ZoneOffset;
 import java.time.ZoneId;
 import java.util.List;
+
 
 import static com.chaung.entityaudit.web.rest.TestUtil.sameInstant;
 import static com.chaung.entityaudit.web.rest.TestUtil.createFormattingConversionService;
@@ -87,6 +89,9 @@ public class PersonResourceIntTest {
     @Autowired
     private EntityManager em;
 
+    @Autowired
+    private Validator validator;
+
     private MockMvc restPersonMockMvc;
 
     private Person person;
@@ -99,7 +104,8 @@ public class PersonResourceIntTest {
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
             .setConversionService(createFormattingConversionService())
-            .setMessageConverters(jacksonMessageConverter).build();
+            .setMessageConverters(jacksonMessageConverter)
+            .setValidator(validator).build();
     }
 
     /**
@@ -183,7 +189,7 @@ public class PersonResourceIntTest {
             .andExpect(jsonPath("$.[*].dateOfBirth").value(hasItem(sameInstant(DEFAULT_DATE_OF_BIRTH))))
             .andExpect(jsonPath("$.[*].gender").value(hasItem(DEFAULT_GENDER.booleanValue())));
     }
-
+    
     @Test
     @Transactional
     public void getPerson() throws Exception {
@@ -436,6 +442,12 @@ public class PersonResourceIntTest {
             .andExpect(jsonPath("$.[*].middleName").value(hasItem(DEFAULT_MIDDLE_NAME.toString())))
             .andExpect(jsonPath("$.[*].dateOfBirth").value(hasItem(sameInstant(DEFAULT_DATE_OF_BIRTH))))
             .andExpect(jsonPath("$.[*].gender").value(hasItem(DEFAULT_GENDER.booleanValue())));
+
+        // Check, that the count call also returns 1
+        restPersonMockMvc.perform(get("/api/people/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("1"));
     }
 
     /**
@@ -447,6 +459,12 @@ public class PersonResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$").isArray())
             .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restPersonMockMvc.perform(get("/api/people/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(content().string("0"));
     }
 
 
@@ -463,10 +481,11 @@ public class PersonResourceIntTest {
     public void updatePerson() throws Exception {
         // Initialize the database
         personRepository.saveAndFlush(person);
+
         int databaseSizeBeforeUpdate = personRepository.findAll().size();
 
         // Update the person
-        Person updatedPerson = personRepository.findOne(person.getId());
+        Person updatedPerson = personRepository.findById(person.getId()).get();
         // Disconnect from session so that the updates on updatedPerson are not directly saved in db
         em.detach(updatedPerson);
         updatedPerson
@@ -501,15 +520,15 @@ public class PersonResourceIntTest {
         // Create the Person
         PersonDTO personDTO = personMapper.toDto(person);
 
-        // If the entity doesn't have an ID, it will be created instead of just being updated
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restPersonMockMvc.perform(put("/api/people")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(personDTO)))
-            .andExpect(status().isCreated());
+            .andExpect(status().isBadRequest());
 
         // Validate the Person in the database
         List<Person> personList = personRepository.findAll();
-        assertThat(personList).hasSize(databaseSizeBeforeUpdate + 1);
+        assertThat(personList).hasSize(databaseSizeBeforeUpdate);
     }
 
     @Test
@@ -517,6 +536,7 @@ public class PersonResourceIntTest {
     public void deletePerson() throws Exception {
         // Initialize the database
         personRepository.saveAndFlush(person);
+
         int databaseSizeBeforeDelete = personRepository.findAll().size();
 
         // Get the person

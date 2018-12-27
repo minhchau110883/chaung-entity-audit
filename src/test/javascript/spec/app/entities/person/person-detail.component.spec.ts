@@ -1,54 +1,40 @@
 /* tslint:disable max-line-length */
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
 
 import { EntityAuditTestModule } from '../../../test.module';
-import { PersonDetailComponent } from '../../../../../../main/webapp/app/entities/person/person-detail.component';
-import { PersonService } from '../../../../../../main/webapp/app/entities/person/person.service';
-import { Person } from '../../../../../../main/webapp/app/entities/person/person.model';
+import { PersonDetailComponent } from 'app/entities/person/person-detail.component';
+import { Person } from 'app/shared/model/person.model';
 
 describe('Component Tests', () => {
-
     describe('Person Management Detail Component', () => {
         let comp: PersonDetailComponent;
         let fixture: ComponentFixture<PersonDetailComponent>;
-        let service: PersonService;
+        const route = ({ data: of({ person: new Person(123) }) } as any) as ActivatedRoute;
 
-        beforeEach(async(() => {
+        beforeEach(() => {
             TestBed.configureTestingModule({
                 imports: [EntityAuditTestModule],
                 declarations: [PersonDetailComponent],
-                providers: [
-                    PersonService
-                ]
+                providers: [{ provide: ActivatedRoute, useValue: route }]
             })
-            .overrideTemplate(PersonDetailComponent, '')
-            .compileComponents();
-        }));
-
-        beforeEach(() => {
+                .overrideTemplate(PersonDetailComponent, '')
+                .compileComponents();
             fixture = TestBed.createComponent(PersonDetailComponent);
             comp = fixture.componentInstance;
-            service = fixture.debugElement.injector.get(PersonService);
         });
 
         describe('OnInit', () => {
             it('Should call load all on init', () => {
                 // GIVEN
 
-                spyOn(service, 'find').and.returnValue(Observable.of(new HttpResponse({
-                    body: new Person(123)
-                })));
-
                 // WHEN
                 comp.ngOnInit();
 
                 // THEN
-                expect(service.find).toHaveBeenCalledWith(123);
-                expect(comp.person).toEqual(jasmine.objectContaining({id: 123}));
+                expect(comp.person).toEqual(jasmine.objectContaining({ id: 123 }));
             });
         });
     });
-
 });

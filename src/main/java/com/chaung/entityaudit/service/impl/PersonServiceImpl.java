@@ -7,11 +7,13 @@ import com.chaung.entityaudit.service.dto.PersonDTO;
 import com.chaung.entityaudit.service.mapper.PersonMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 
 /**
  * Service Implementation for managing Person.
@@ -40,6 +42,7 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public PersonDTO save(PersonDTO personDTO) {
         log.debug("Request to save Person : {}", personDTO);
+
         Person person = personMapper.toEntity(personDTO);
         person = personRepository.save(person);
         return personMapper.toDto(person);
@@ -59,6 +62,7 @@ public class PersonServiceImpl implements PersonService {
             .map(personMapper::toDto);
     }
 
+
     /**
      * Get one person by id.
      *
@@ -67,10 +71,10 @@ public class PersonServiceImpl implements PersonService {
      */
     @Override
     @Transactional(readOnly = true)
-    public PersonDTO findOne(Long id) {
+    public Optional<PersonDTO> findOne(Long id) {
         log.debug("Request to get Person : {}", id);
-        Person person = personRepository.findOne(id);
-        return personMapper.toDto(person);
+        return personRepository.findById(id)
+            .map(personMapper::toDto);
     }
 
     /**
@@ -81,6 +85,6 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public void delete(Long id) {
         log.debug("Request to delete Person : {}", id);
-        personRepository.delete(id);
+        personRepository.deleteById(id);
     }
 }

@@ -1,19 +1,20 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
-import { Subscription } from 'rxjs/Subscription';
+import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { Subscription } from 'rxjs';
 import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
 
-import { Person } from './person.model';
+import { IPerson } from 'app/shared/model/person.model';
+import { AccountService } from 'app/core';
+
+import { ITEMS_PER_PAGE } from 'app/shared';
 import { PersonService } from './person.service';
-import { ITEMS_PER_PAGE, Principal } from '../../shared';
 
 @Component({
     selector: 'jhi-person',
     templateUrl: './person.component.html'
 })
 export class PersonComponent implements OnInit, OnDestroy {
-
-    people: Person[];
+    people: IPerson[];
     currentAccount: any;
     eventSubscriber: Subscription;
     itemsPerPage: number;
@@ -25,11 +26,11 @@ export class PersonComponent implements OnInit, OnDestroy {
     totalItems: number;
 
     constructor(
-        private personService: PersonService,
-        private jhiAlertService: JhiAlertService,
-        private eventManager: JhiEventManager,
-        private parseLinks: JhiParseLinks,
-        private principal: Principal
+        protected personService: PersonService,
+        protected jhiAlertService: JhiAlertService,
+        protected eventManager: JhiEventManager,
+        protected parseLinks: JhiParseLinks,
+        protected accountService: AccountService
     ) {
         this.people = [];
         this.itemsPerPage = ITEMS_PER_PAGE;
@@ -42,14 +43,16 @@ export class PersonComponent implements OnInit, OnDestroy {
     }
 
     loadAll() {
-        this.personService.query({
-            page: this.page,
-            size: this.itemsPerPage,
-            sort: this.sort()
-        }).subscribe(
-            (res: HttpResponse<Person[]>) => this.onSuccess(res.body, res.headers),
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
+        this.personService
+            .query({
+                page: this.page,
+                size: this.itemsPerPage,
+                sort: this.sort()
+            })
+            .subscribe(
+                (res: HttpResponse<IPerson[]>) => this.paginatePeople(res.body, res.headers),
+                (res: HttpErrorResponse) => this.onError(res.message)
+            );
     }
 
     reset() {
@@ -62,9 +65,10 @@ export class PersonComponent implements OnInit, OnDestroy {
         this.page = page;
         this.loadAll();
     }
+
     ngOnInit() {
         this.loadAll();
-        this.principal.identity().then((account) => {
+        this.accountService.identity().then(account => {
             this.currentAccount = account;
         });
         this.registerChangeInPeople();
@@ -74,11 +78,12 @@ export class PersonComponent implements OnInit, OnDestroy {
         this.eventManager.destroy(this.eventSubscriber);
     }
 
-    trackId(index: number, item: Person) {
+    trackId(index: number, item: IPerson) {
         return item.id;
     }
+
     registerChangeInPeople() {
-        this.eventSubscriber = this.eventManager.subscribe('personListModification', (response) => this.reset());
+        this.eventSubscriber = this.eventManager.subscribe('personListModification', response => this.reset());
     }
 
     sort() {
@@ -89,15 +94,15 @@ export class PersonComponent implements OnInit, OnDestroy {
         return result;
     }
 
-    private onSuccess(data, headers) {
+    protected paginatePeople(data: IPerson[], headers: HttpHeaders) {
         this.links = this.parseLinks.parse(headers.get('link'));
-        this.totalItems = headers.get('X-Total-Count');
+        this.totalItems = parseInt(headers.get('X-Total-Count'), 10);
         for (let i = 0; i < data.length; i++) {
             this.people.push(data[i]);
         }
     }
 
-    private onError(error) {
-        this.jhiAlertService.error(error.message, null, null);
+    protected onError(errorMessage: string) {
+        this.jhiAlertService.error(errorMessage, null, null);
     }
 }
